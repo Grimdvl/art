@@ -5,6 +5,7 @@ const webpack = require("webpack-stream");
 const browsersync = require("browser-sync");
 
 const dist = "./dist/";
+// const dist = "C:/OSPanel/domains/projects/javascript-pro/art/dist";
 
 gulp.task("copy-html", () => {
     return gulp.src("./src/index.html")
