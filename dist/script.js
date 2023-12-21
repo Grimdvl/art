@@ -129,7 +129,7 @@ window.addEventListener('DOMContentLoaded', () => {
   Object(_modules_calc__WEBPACK_IMPORTED_MODULE_6__["default"])('#size', '#material', '#options', '.promocode', '.calc-price');
   Object(_modules_filter__WEBPACK_IMPORTED_MODULE_7__["default"])();
   Object(_modules_pictureSize__WEBPACK_IMPORTED_MODULE_8__["default"])('.sizes-block');
-  Object(_modules_accordion__WEBPACK_IMPORTED_MODULE_9__["default"])('.accordion-heading', '.accordion-block');
+  Object(_modules_accordion__WEBPACK_IMPORTED_MODULE_9__["default"])('.accordion-heading');
 });
 
 /***/ }),
@@ -143,14 +143,20 @@ window.addEventListener('DOMContentLoaded', () => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-const accordion = (triggerSelector, itemsSelector) => {
-  const btns = document.querySelectorAll(triggerSelector),
-    blocks = document.querySelectorAll(itemsSelector);
+const accordion = triggerSelector => {
+  const btns = document.querySelectorAll(triggerSelector);
+
+  //   blocks = document.querySelectorAll(itemsSelector);
+
   btns.forEach(btn => {
     btn.addEventListener('click', function () {
       this.classList.toggle('active-style');
       this.nextElementSibling.classList.toggle('active-content');
-      if (this.classList.contains('active-style')) {} else {}
+      if (this.classList.contains('active-style')) {
+        this.nextElementSibling.style.maxHeight = this.nextElementSibling.scrollHeight + 80 + 'px';
+      } else {
+        this.nextElementSibling.style.maxHeight = '0px';
+      }
     });
   });
 
