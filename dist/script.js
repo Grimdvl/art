@@ -318,6 +318,8 @@ const drop = () => {
       input.addEventListener(eventName, () => unhighlight(input), false);
     });
   });
+
+  // доделать что бі картикна появлялась на страничке 
   fileInputs.forEach(input => {
     input.addEventListener('drop', e => {
       input.files = e.dataTransfer.files;
