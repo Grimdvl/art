@@ -21,7 +21,7 @@ window.addEventListener('DOMContentLoaded', () => {
     forms();
     mask('[name="phone"]');
     checkTextInputs('[name="name"]');
-    checkTextInputs('[name="message"]');
+    checkTextInputs('[name="message"]', 200);
     showMoreStyles('.button-styles', '#styles .row');
     calc('#size', '#material', '#options', '.promocode', '.calc-price');
     filter();

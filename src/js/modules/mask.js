@@ -1,6 +1,6 @@
 const mask = (selector) => {
 
-     let setCursorPosition = (pos, elem) => {
+    let setCursorPosition = (pos, elem) => {
         elem.focus();
 
         if (elem.setSelectionRange) {
@@ -13,10 +13,9 @@ const mask = (selector) => {
             range.moveStart('character', pos);
             range.select();
         }
-     };
+    };
 
     function createMask(event) {
-
         let matrix = '+7 (___) ____ __ __',
             i = 0,
             def = matrix.replace(/\D/g, ''),

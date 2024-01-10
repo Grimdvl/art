@@ -1,23 +1,13 @@
 const filter = () => {
     const menu = document.querySelector('.portfolio-menu'),
           items = menu.querySelectorAll('li'),
-          btnAll = menu.querySelector('.all'),
-          btnLovers = menu.querySelector('.lovers'),
-          btnChef = menu.querySelector('.chef'),
-          btnGirl = menu.querySelector('.girl'),
-          btnGuy = menu.querySelector('.guy'),
-          btnGrandmother = menu.querySelector('.grandmother'),
-          btnGranddad = menu.querySelector('.granddad'),
           wrapper = document.querySelector('.portfolio-wrapper'),
-          markAll = wrapper.querySelectorAll('.all'),
-          markGirl = wrapper.querySelectorAll('.girl'),
-          markLovers = wrapper.querySelectorAll('.lovers'),
-          markChef = wrapper.querySelectorAll('.chef'),
-          markGuy = wrapper.querySelectorAll('.guy'),
           no = document.querySelector('.portfolio-no');
 
     const typeFilter = (markType) => {
-        markAll.forEach(mark => {
+        const allMarks = wrapper.querySelectorAll('.all');
+        
+        allMarks.forEach(mark => {
             mark.style.display = 'none';
             mark.classList.remove('animated', 'fadeIn');
         });
@@ -36,40 +26,17 @@ const filter = () => {
         }
     };
 
-    btnAll.addEventListener('click', () => {
-        typeFilter(markAll);
-    });
-
-    btnLovers.addEventListener('click', () => {
-        typeFilter(markLovers);
-    });
-
-    btnGuy.addEventListener('click', () => {
-        typeFilter(markGuy);
-    });
-
-    btnChef.addEventListener('click', () => {
-        typeFilter(markChef);
-    });
-
-    btnGirl.addEventListener('click', () => {
-        typeFilter(markGirl);
-    });
-
-    btnGranddad.addEventListener('click', () => {
-        typeFilter();
-    });
-
-    btnGrandmother.addEventListener('click', () => {
-        typeFilter();
-    });
-
     menu.addEventListener('click', (e) => {
-        let target = e.target;
+        const target = e.target;
 
-        if (target && target.tagName == 'LI') {
+        if (target && target.tagName === 'LI') {
             items.forEach(btn => btn.classList.remove('active'));
             target.classList.add('active');
+            
+            const btnClass = target.classList[0];
+            
+            const markType = wrapper.querySelectorAll(`.${btnClass}`);
+            typeFilter(markType);
         }
     });
 };

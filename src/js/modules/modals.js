@@ -2,6 +2,7 @@ const modals = () => {
     let btnPressed = false;
 
     function bindModal(triggerSelector, modalSelector, closeSelector, destroy = false) {
+        const present = document.querySelector('.fixed-gift');
         const trigger = document.querySelectorAll(triggerSelector),
               modal = document.querySelector(modalSelector),
               close = modal.querySelector(closeSelector),
@@ -28,6 +29,7 @@ const modals = () => {
                 modal.style.display = 'block';
                 document.body.style.overflow = 'hidden';
                 document.body.style.marginRight = `${scroll}px`;
+                present.style.marginRight = `${scroll}px`;
             });
         });
 
@@ -39,6 +41,7 @@ const modals = () => {
             modal.style.display = 'none';
             document.body.style.overflow = '';
             document.body.style.marginRight = '0px';
+            present.style.marginRight = '0px';
         });
 
         modal.addEventListener('click', (e) => {
@@ -49,6 +52,7 @@ const modals = () => {
                 modal.style.display = 'none';
                 document.body.style.overflow = '';
                 document.body.style.marginRight = '0px';
+                present.style.marginRight = '0px';
             }
         });
 

@@ -1524,6 +1524,15 @@ h4 {
   }
 }
 @media (max-width: 767px) {
+  .main-slider-item img {
+    width: 100%;
+  }
+  .feedback-block img {
+    width: 100%;
+  }
+  .feedback {
+    height: 900px;
+  }
   .main-features {
     max-width: 30rem;
     margin-left: auto;
@@ -1576,6 +1585,9 @@ h4 {
   }
   .card-3 img {
     float: right;
+  }
+  .feedback {
+    height: 740px;
   }
   .feedback-slider-item {
     padding-bottom: 0;

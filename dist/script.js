@@ -130,7 +130,7 @@ window.addEventListener('DOMContentLoaded', () => {
   Object(_modules_forms__WEBPACK_IMPORTED_MODULE_2__["default"])();
   Object(_modules_mask__WEBPACK_IMPORTED_MODULE_3__["default"])('[name="phone"]');
   Object(_modules_checkTextInputs__WEBPACK_IMPORTED_MODULE_4__["default"])('[name="name"]');
-  Object(_modules_checkTextInputs__WEBPACK_IMPORTED_MODULE_4__["default"])('[name="message"]');
+  Object(_modules_checkTextInputs__WEBPACK_IMPORTED_MODULE_4__["default"])('[name="message"]', 200);
   Object(_modules_showMoreStyles__WEBPACK_IMPORTED_MODULE_5__["default"])('.button-styles', '#styles .row');
   Object(_modules_calc__WEBPACK_IMPORTED_MODULE_6__["default"])('#size', '#material', '#options', '.promocode', '.calc-price');
   Object(_modules_filter__WEBPACK_IMPORTED_MODULE_7__["default"])();
@@ -154,17 +154,24 @@ window.addEventListener('DOMContentLoaded', () => {
 __webpack_require__.r(__webpack_exports__);
 const accordion = triggerSelector => {
   const btns = document.querySelectorAll(triggerSelector);
-
   //   blocks = document.querySelectorAll(itemsSelector);
 
   btns.forEach(btn => {
     btn.addEventListener('click', function () {
-      this.classList.toggle('active-style');
-      this.nextElementSibling.classList.toggle('active-content');
-      if (this.classList.contains('active-style')) {
-        this.nextElementSibling.style.maxHeight = this.nextElementSibling.scrollHeight + 80 + 'px';
-      } else {
+      const isActive = this.classList.contains('active-style');
+      if (isActive) {
+        this.classList.remove('active-style');
+        this.nextElementSibling.classList.remove('active-content');
         this.nextElementSibling.style.maxHeight = '0px';
+      } else {
+        btns.forEach(otherBtn => {
+          otherBtn.classList.remove('active-style');
+          otherBtn.nextElementSibling.classList.remove('active-content');
+          otherBtn.nextElementSibling.style.maxHeight = '0px';
+        });
+        this.classList.add('active-style');
+        this.nextElementSibling.classList.add('active-content');
+        this.nextElementSibling.style.maxHeight = this.nextElementSibling.scrollHeight + 80 + 'px';
       }
     });
   });
@@ -262,14 +269,23 @@ const calc = (size, material, options, promocode, result) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-const checkTextInputs = selector => {
+const checkTextInputs = (selector, limit = 20) => {
   const txtInputs = document.querySelectorAll(selector);
   txtInputs.forEach(input => {
     input.addEventListener('keypress', function (e) {
-      if (e.key.match(/[^а-яё 0-9]/ig)) {
-        e.preventDefault();
+      if (selector === '[name="name"]') {
+        if (e.key.match(/[^а-яё]/i) || this.value.length >= limit) {
+          e.preventDefault();
+        }
+      } else {
+        if (e.key.match(/[^а-яё]/i) && e.key !== ' ' || this.value.length >= limit) {
+          e.preventDefault();
+        }
       }
     });
+    if (selector === '[name="name"]') {
+      input.setAttribute('autocomplete', 'off');
+    }
   });
 };
 /* harmony default export */ __webpack_exports__["default"] = (checkTextInputs);
@@ -347,22 +363,11 @@ __webpack_require__.r(__webpack_exports__);
 const filter = () => {
   const menu = document.querySelector('.portfolio-menu'),
     items = menu.querySelectorAll('li'),
-    btnAll = menu.querySelector('.all'),
-    btnLovers = menu.querySelector('.lovers'),
-    btnChef = menu.querySelector('.chef'),
-    btnGirl = menu.querySelector('.girl'),
-    btnGuy = menu.querySelector('.guy'),
-    btnGrandmother = menu.querySelector('.grandmother'),
-    btnGranddad = menu.querySelector('.granddad'),
     wrapper = document.querySelector('.portfolio-wrapper'),
-    markAll = wrapper.querySelectorAll('.all'),
-    markGirl = wrapper.querySelectorAll('.girl'),
-    markLovers = wrapper.querySelectorAll('.lovers'),
-    markChef = wrapper.querySelectorAll('.chef'),
-    markGuy = wrapper.querySelectorAll('.guy'),
     no = document.querySelector('.portfolio-no');
   const typeFilter = markType => {
-    markAll.forEach(mark => {
+    const allMarks = wrapper.querySelectorAll('.all');
+    allMarks.forEach(mark => {
       mark.style.display = 'none';
       mark.classList.remove('animated', 'fadeIn');
     });
@@ -378,32 +383,14 @@ const filter = () => {
       no.classList.add('animated', 'fadeIn');
     }
   };
-  btnAll.addEventListener('click', () => {
-    typeFilter(markAll);
-  });
-  btnLovers.addEventListener('click', () => {
-    typeFilter(markLovers);
-  });
-  btnGuy.addEventListener('click', () => {
-    typeFilter(markGuy);
-  });
-  btnChef.addEventListener('click', () => {
-    typeFilter(markChef);
-  });
-  btnGirl.addEventListener('click', () => {
-    typeFilter(markGirl);
-  });
-  btnGranddad.addEventListener('click', () => {
-    typeFilter();
-  });
-  btnGrandmother.addEventListener('click', () => {
-    typeFilter();
-  });
   menu.addEventListener('click', e => {
-    let target = e.target;
-    if (target && target.tagName == 'LI') {
+    const target = e.target;
+    if (target && target.tagName === 'LI') {
       items.forEach(btn => btn.classList.remove('active'));
       target.classList.add('active');
+      const btnClass = target.classList[0];
+      const markType = wrapper.querySelectorAll(`.${btnClass}`);
+      typeFilter(markType);
     }
   });
 };
@@ -567,6 +554,7 @@ __webpack_require__.r(__webpack_exports__);
 const modals = () => {
   let btnPressed = false;
   function bindModal(triggerSelector, modalSelector, closeSelector, destroy = false) {
+    const present = document.querySelector('.fixed-gift');
     const trigger = document.querySelectorAll(triggerSelector),
       modal = document.querySelector(modalSelector),
       close = modal.querySelector(closeSelector),
@@ -588,6 +576,7 @@ const modals = () => {
         modal.style.display = 'block';
         document.body.style.overflow = 'hidden';
         document.body.style.marginRight = `${scroll}px`;
+        present.style.marginRight = `${scroll}px`;
       });
     });
     close.addEventListener('click', () => {
@@ -597,6 +586,7 @@ const modals = () => {
       modal.style.display = 'none';
       document.body.style.overflow = '';
       document.body.style.marginRight = '0px';
+      present.style.marginRight = '0px';
     });
     modal.addEventListener('click', e => {
       if (e.target === modal) {
@@ -606,6 +596,7 @@ const modals = () => {
         modal.style.display = 'none';
         document.body.style.overflow = '';
         document.body.style.marginRight = '0px';
+        present.style.marginRight = '0px';
       }
     });
   }
@@ -717,7 +708,7 @@ const scrolling = upSelector => {
   // Scrolling with raf
 
   let links = document.querySelectorAll('[href^="#"]'),
-    speed = 0.3;
+    speed = 0.2;
   links.forEach(link => {
     link.addEventListener('click', function (event) {
       event.preventDefault();

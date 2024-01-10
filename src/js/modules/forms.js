@@ -16,7 +16,7 @@ const forms = () => {
           fail: 'assets/img/fail.png',
     };
 
-    const path ={
+    const path = {
         designer: 'assets/server.php',
         question: 'assets/question.php'
     }
