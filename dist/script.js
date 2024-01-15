@@ -124,15 +124,16 @@ __webpack_require__.r(__webpack_exports__);
 window.addEventListener('DOMContentLoaded', () => {
   'use strict';
 
+  let calcState = {};
   Object(_modules_modals__WEBPACK_IMPORTED_MODULE_0__["default"])();
   Object(_modules_sliders__WEBPACK_IMPORTED_MODULE_1__["default"])('.feedback-slider-item', '', '.main-prev-btn', '.main-next-btn');
   Object(_modules_sliders__WEBPACK_IMPORTED_MODULE_1__["default"])('.main-slider-item', 'vertical');
-  Object(_modules_forms__WEBPACK_IMPORTED_MODULE_2__["default"])();
+  Object(_modules_forms__WEBPACK_IMPORTED_MODULE_2__["default"])(calcState);
   Object(_modules_mask__WEBPACK_IMPORTED_MODULE_3__["default"])('[name="phone"]');
   Object(_modules_checkTextInputs__WEBPACK_IMPORTED_MODULE_4__["default"])('[name="name"]');
   Object(_modules_checkTextInputs__WEBPACK_IMPORTED_MODULE_4__["default"])('[name="message"]', 200);
   Object(_modules_showMoreStyles__WEBPACK_IMPORTED_MODULE_5__["default"])('.button-styles', '#styles .row');
-  Object(_modules_calc__WEBPACK_IMPORTED_MODULE_6__["default"])('#size', '#material', '#options', '.promocode', '.calc-price');
+  Object(_modules_calc__WEBPACK_IMPORTED_MODULE_6__["default"])('#size', '#material', '#options', '.promocode', '.calc-price', calcState);
   Object(_modules_filter__WEBPACK_IMPORTED_MODULE_7__["default"])();
   Object(_modules_pictureSize__WEBPACK_IMPORTED_MODULE_8__["default"])('.sizes-block');
   Object(_modules_accordion__WEBPACK_IMPORTED_MODULE_9__["default"])('.accordion-heading');
@@ -234,22 +235,34 @@ const burger = (menuSelector, burgerSelector) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-const calc = (size, material, options, promocode, result) => {
-  const sizeBlock = document.querySelector(size),
-    materialBlock = document.querySelector(material),
-    optionsBlock = document.querySelector(options),
-    promocodeBlock = document.querySelector(promocode),
-    resultBlock = document.querySelector(result);
-  let sum = 0;
+const calc = (sizeSelector, materialSelector, optionsSelector, promocodeSelector, resultSelector, state) => {
+  const sizeBlock = document.querySelector(sizeSelector),
+    materialBlock = document.querySelector(materialSelector),
+    optionsBlock = document.querySelector(optionsSelector),
+    promocodeBlock = document.querySelector(promocodeSelector),
+    resultBlock = document.querySelector(resultSelector);
   const calcFunc = () => {
-    sum = Math.round(+sizeBlock.value * +materialBlock.value + +optionsBlock.value);
-    if (sizeBlock.value == '' || materialBlock.value == '') {
-      resultBlock.textContent = "Please, choose picture size and material";
-    } else if (promocodeBlock.value === 'IWANTPOPART') {
-      resultBlock.textContent = Math.round(sum * 0.7);
-    } else {
-      resultBlock.textContent = sum;
+    switch (true) {
+      case sizeBlock.options[sizeBlock.selectedIndex].text === 'Выберите размер картины' || materialBlock.options[materialBlock.selectedIndex].text === 'Выберите материал картины':
+        resultBlock.textContent = "Please, choose picture size and material";
+        break;
+      case promocodeBlock.value === 'IWANTPOPART':
+        state.size = sizeBlock.options[sizeBlock.selectedIndex].text;
+        state.material = materialBlock.options[materialBlock.selectedIndex].text;
+        state.options = optionsBlock.options[optionsBlock.selectedIndex].text;
+        state.withoutDiscount = '';
+        state.withDiscount = Math.round(+sizeBlock.value * +materialBlock.value + +optionsBlock.value) * 0.7;
+        resultBlock.textContent = state.withDiscount;
+        break;
+      default:
+        state.size = sizeBlock.options[sizeBlock.selectedIndex].text;
+        state.material = materialBlock.options[materialBlock.selectedIndex].text;
+        state.options = optionsBlock.options[optionsBlock.selectedIndex].text;
+        state.withoutDiscount = Math.round(+sizeBlock.value * +materialBlock.value + +optionsBlock.value);
+        state.withDiscount = '';
+        resultBlock.textContent = state.withoutDiscount;
     }
+    console.log(state);
   };
   sizeBlock.addEventListener('change', calcFunc);
   materialBlock.addEventListener('change', calcFunc);
@@ -335,7 +348,7 @@ const drop = () => {
     });
   });
 
-  // доделать что бі картикна появлялась на страничке 
+  // доделать что б картикна появлялась на страничке 
   fileInputs.forEach(input => {
     input.addEventListener('drop', e => {
       input.files = e.dataTransfer.files;
@@ -409,7 +422,7 @@ const filter = () => {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _services_requests__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../services/requests */ "./src/js/services/requests.js");
 
-const forms = () => {
+const forms = state => {
   const form = document.querySelectorAll('form'),
     inputs = document.querySelectorAll('input'),
     upload = document.querySelectorAll('[name="upload"]');
@@ -464,11 +477,17 @@ const forms = () => {
       textMessage.textContent = message.loading;
       statusMessage.appendChild(textMessage);
       const formData = new FormData(item);
+      if (item.getAttribute('data-calc') === "end") {
+        for (let key in state) {
+          formData.append(key, state[key]);
+        }
+      }
       let api;
       item.closest('.popup-design') || item.classList.contains('calc_form') ? api = path.designer : api = path.question;
       console.log(api);
       Object(_services_requests__WEBPACK_IMPORTED_MODULE_0__["postData"])(api, formData).then(res => {
         console.log(res);
+        console.log(state);
         statusImg.setAttribute('src', message.ok);
         textMessage.textContent = message.success;
       }).catch(() => {
@@ -520,15 +539,29 @@ const mask = selector => {
     if (def.length >= val.length) {
       val = def;
     }
+    if (event.inputType === 'deleteContentBackward' && val.length <= 3) {
+      this.value = matrix;
+      setCursorPosition(3, this);
+      return;
+    }
     this.value = matrix.replace(/./g, function (a) {
       return /[_\d]/.test(a) && i < val.length ? val.charAt(i++) : i >= val.length ? '' : a;
     });
     if (event.type === 'blur') {
-      if (this.value.length == 2) {
+      if (this.value.length === 2) {
         this.value = '';
       }
-    } else {
-      setCursorPosition(this.value.length, this);
+    } else if (event.type === 'focus' || event.type === 'click') {
+      if (this.value.length <= 3) {
+        setCursorPosition(this.value.length, this);
+      } else {
+        setCursorPosition(3, this);
+      }
+    }
+  }
+  function preventCursorMove(event) {
+    if (event.key === 'ArrowLeft' && (this.selectionStart <= 3 || this.selectionEnd <= 3)) {
+      event.preventDefault();
     }
   }
   let inputs = document.querySelectorAll(selector);
@@ -536,6 +569,8 @@ const mask = selector => {
     input.addEventListener('input', createMask);
     input.addEventListener('focus', createMask);
     input.addEventListener('blur', createMask);
+    input.addEventListener('click', createMask);
+    input.addEventListener('keydown', preventCursorMove);
   });
 };
 /* harmony default export */ __webpack_exports__["default"] = (mask);

@@ -231,10 +231,13 @@
 			<h2>Рассчитайте стоимость и получите скидку 30%</h2>
 			<div class=row>
 				<div class="col-md-4 col-offset-1">
-					<form class="form calc_form" action=# method=POST enctype=multipart/form-data>
+					<form class="form calc_form" action=# method=POST enctype=multipart/form-data data-calc="end">
 						<h4>Загрузите свое фото</h4>
 						<div class=file_upload>
 							<button type=button>Загрузить фотографию</button>
+							<div id="imageContainer">
+								<!-- <img id="uploadedImage" alt="Uploaded Image"> -->
+							</div>							
 							<div>Файл не выбран</div>
 							<input type=file name="upload" multiple accept="image/*">
 						</div>
@@ -242,7 +245,7 @@
 							<option value>Выберите размер картины</option>
 							<option value="1000">40x50</option>
 							<option value="1500">50x70</option>
-							<option value=2000">70x70</option>
+							<option value="2000"">70x70</option>
 							<option value="500">70x100</option>
 						</select>
 						<select id=material>

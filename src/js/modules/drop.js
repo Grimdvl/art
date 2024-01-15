@@ -38,7 +38,7 @@ const drop = () => {
         });
     });
 
-    // доделать что бі картикна появлялась на страничке 
+    // доделать что б картикна появлялась на страничке 
     fileInputs.forEach(input => {
         input.addEventListener('drop', (e) => {
             input.files = e.dataTransfer.files;

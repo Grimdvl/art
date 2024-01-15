@@ -1,28 +1,38 @@
-const calc = (size, material, options, promocode, result) => {
-    const sizeBlock = document.querySelector(size),
-          materialBlock = document.querySelector(material),
-          optionsBlock = document.querySelector(options),
-          promocodeBlock = document.querySelector(promocode),
-          resultBlock = document.querySelector(result);
-
-    let sum = 0;
+const calc = (sizeSelector, materialSelector, optionsSelector, promocodeSelector, resultSelector, state) => {
+    const sizeBlock = document.querySelector(sizeSelector),
+          materialBlock = document.querySelector(materialSelector),
+          optionsBlock = document.querySelector(optionsSelector),
+          promocodeBlock = document.querySelector(promocodeSelector),
+          resultBlock = document.querySelector(resultSelector);
 
     const calcFunc = () => {
-        sum = Math.round((+sizeBlock.value) * (+materialBlock.value) + (+optionsBlock.value));
-        
-        if (sizeBlock.value == '' || materialBlock.value == '') {
-            resultBlock.textContent = "Please, choose picture size and material";
-        } else if (promocodeBlock.value === 'IWANTPOPART') {
-            resultBlock.textContent = Math.round(sum * 0.7);
-        } else {
-            resultBlock.textContent = sum;
+        switch (true) {
+            case sizeBlock.options[sizeBlock.selectedIndex].text === 'Выберите размер картины' || materialBlock.options[materialBlock.selectedIndex].text === 'Выберите материал картины':
+                resultBlock.textContent = "Please, choose picture size and material";
+                break;
+            case promocodeBlock.value === 'IWANTPOPART':
+                state.size = sizeBlock.options[sizeBlock.selectedIndex].text;
+                state.material = materialBlock.options[materialBlock.selectedIndex].text;
+                state.options = optionsBlock.options[optionsBlock.selectedIndex].text;
+                state.withoutDiscount = '';
+                state.withDiscount = Math.round((+sizeBlock.value) * (+materialBlock.value) + (+optionsBlock.value)) * 0.7;
+                resultBlock.textContent = state.withDiscount;
+                break;
+            default:
+                state.size = sizeBlock.options[sizeBlock.selectedIndex].text;
+                state.material = materialBlock.options[materialBlock.selectedIndex].text;
+                state.options = optionsBlock.options[optionsBlock.selectedIndex].text;
+                state.withoutDiscount = Math.round((+sizeBlock.value) * (+materialBlock.value) + (+optionsBlock.value));
+                state.withDiscount = '';
+                resultBlock.textContent = state.withoutDiscount;
         }
+        console.log(state);
     };
 
     sizeBlock.addEventListener('change', calcFunc);
     materialBlock.addEventListener('change', calcFunc);
     optionsBlock.addEventListener('change', calcFunc);
     promocodeBlock.addEventListener('input', calcFunc);
-}
+};
 
 export default calc;

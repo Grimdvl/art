@@ -15,15 +15,17 @@ import drop from './modules/drop';
 window.addEventListener('DOMContentLoaded', () => {
     'use strict';
 
+    let calcState = {};
+
     modals();
     sliders('.feedback-slider-item', '', '.main-prev-btn', '.main-next-btn');
     sliders('.main-slider-item', 'vertical');
-    forms();
+    forms(calcState);
     mask('[name="phone"]');
     checkTextInputs('[name="name"]');
     checkTextInputs('[name="message"]', 200);
     showMoreStyles('.button-styles', '#styles .row');
-    calc('#size', '#material', '#options', '.promocode', '.calc-price');
+    calc('#size', '#material', '#options', '.promocode', '.calc-price', calcState);
     filter();
     pictureSize('.sizes-block');
     accordion('.accordion-heading');
