@@ -84,8 +84,11 @@
 				<div class="col-md-3 col-md-offset-3 col-sm-offset-0 col-sm-4 hidden-xs">
 					<div class=file_upload>
 						<button type=button>Загрузить фотографию</button>
-						<div>Файл не выбран</div>
-						<input type=file name="upload">
+						<label for="input-file">
+							<img name="img-upload"></img>
+							<div>Файл не выбран</div>
+							<input id="input-file" name="upload" type="file" multiple accept="image/*">
+						</label>
 					</div>
 					<p class=email>E-mail: <a href=mailto:info@kartiny.art>info@kartiny.art</a></p>
 				</div>
@@ -234,12 +237,12 @@
 					<form class="form calc_form" action=# method=POST enctype=multipart/form-data data-calc="end">
 						<h4>Загрузите свое фото</h4>
 						<div class=file_upload>
-							<button type=button>Загрузить фотографию</button>
-							<div id="imageContainer">
-								<!-- <img id="uploadedImage" alt="Uploaded Image"> -->
-							</div>							
-							<div>Файл не выбран</div>
-							<input type=file name="upload" multiple accept="image/*">
+							<button type=button>Загрузить фотографию</button>						
+							<label for="input-file">
+								<img name="img-upload"></img>
+								<div>Файл не выбран</div>
+								<input id="input-file" name="upload" type="file" multiple accept="image/*">
+							</label>
 						</div>
 						<select id=size>
 							<option value>Выберите размер картины</option>
@@ -695,8 +698,11 @@
 					<h4>Заказать дизайн портрета</h4>
 					<div class=file_upload>
 						<button type=button>Загрузить фотографию</button>
-						<div>Файл не выбран</div>
-						<input type=file name="upload">
+						<label for="input-file">
+							<img name="img-upload"></img>
+							<div>Файл не выбран</div>
+							<input id="input-file" name="upload" type="file" multiple accept="image/*">
+						</label>
 					</div>
 					<div class=main-form>
 						<div class=form>
