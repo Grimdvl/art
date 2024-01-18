@@ -38,39 +38,33 @@ const drop = () => {
         });
     });
 
-    // доделать что б картикна появлялась на страничке 
+    const uploadImage = (event) => {
+        event.parentNode.classList.add('active');
+        let imgLink = URL.createObjectURL(event.files[0]);
+        event.previousElementSibling.style.backgroundImage = `url(${imgLink})`;
+        event.previousElementSibling.textContent = '';
+        event.previousElementSibling.style.borderRadius = 0;
+        event.previousElementSibling.style.border = 0;
+        event.previousElementSibling.style.content = 'none';
+        if (event.previousElementSibling && event.previousElementSibling.childNodes.length > 0) {
+            event.previousElementSibling.childNodes[0].style.display = 'none';
+        }
+    };
+
     fileInputs.forEach(input => {
         input.addEventListener('drop', (e) => {
             input.files = e.dataTransfer.files;
             let dots;
             const arr = input.files[0].name.split('.');
             
-            input.parentNode.classList.add('active');
             arr[0].length > 6 ? dots = '...' : dots = '.';
             const name = arr[0].substring(0, 6) + dots + arr[1];
             input.nextElementSibling.textContent = name;
 
-            let imgLink = URL.createObjectURL(input.files[0]);
-            input.previousElementSibling.style.backgroundImage = `url(${imgLink})`;
-            input.previousElementSibling.textContent = '';
-            input.previousElementSibling.style.borderRadius = 0;
-            input.previousElementSibling.style.border = 0;
-            input.previousElementSibling.style.content = 'none';
-            if (input.previousElementSibling && input.previousElementSibling.childNodes.length > 0) {
-                input.previousElementSibling.childNodes[0].style.display = 'none';
-            }
+            uploadImage(input);
         });
         input.addEventListener('change', () => {
-            input.parentNode.classList.add('active');
-            let imgLink = URL.createObjectURL(input.files[0]);
-            input.previousElementSibling.style.backgroundImage = `url(${imgLink})`;
-            input.previousElementSibling.textContent = '';
-            input.previousElementSibling.style.borderRadius = 0;
-            input.previousElementSibling.style.border = 0;
-            input.previousElementSibling.style.content = 'none';
-            if (input.previousElementSibling && input.previousElementSibling.childNodes.length > 0) {
-                input.previousElementSibling.childNodes[0].style.display = 'none';
-            }
+            uploadImage(input);
         });
     });
 };
