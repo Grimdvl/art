@@ -354,9 +354,31 @@ const drop = () => {
       input.files = e.dataTransfer.files;
       let dots;
       const arr = input.files[0].name.split('.');
+      input.parentNode.classList.add('active');
       arr[0].length > 6 ? dots = '...' : dots = '.';
       const name = arr[0].substring(0, 6) + dots + arr[1];
-      input.previousElementSibling.textContent = name;
+      input.nextElementSibling.textContent = name;
+      let imgLink = URL.createObjectURL(input.files[0]);
+      input.previousElementSibling.style.backgroundImage = `url(${imgLink})`;
+      input.previousElementSibling.textContent = '';
+      input.previousElementSibling.style.borderRadius = 0;
+      input.previousElementSibling.style.border = 0;
+      input.previousElementSibling.style.content = 'none';
+      if (input.previousElementSibling && input.previousElementSibling.childNodes.length > 0) {
+        input.previousElementSibling.childNodes[0].style.display = 'none';
+      }
+    });
+    input.addEventListener('change', () => {
+      input.parentNode.classList.add('active');
+      let imgLink = URL.createObjectURL(input.files[0]);
+      input.previousElementSibling.style.backgroundImage = `url(${imgLink})`;
+      input.previousElementSibling.textContent = '';
+      input.previousElementSibling.style.borderRadius = 0;
+      input.previousElementSibling.style.border = 0;
+      input.previousElementSibling.style.content = 'none';
+      if (input.previousElementSibling && input.previousElementSibling.childNodes.length > 0) {
+        input.previousElementSibling.childNodes[0].style.display = 'none';
+      }
     });
   });
 };
@@ -456,7 +478,7 @@ const forms = state => {
       const arr = item.files[0].name.split('.');
       arr[0].length > 6 ? dots = '...' : dots = '.';
       const name = arr[0].substring(0, 6) + dots + arr[1];
-      item.previousElementSibling.textContent = name;
+      item.nextElementSibling.textContent = name;
     });
   });
   form.forEach(item => {

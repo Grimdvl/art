@@ -216,6 +216,9 @@ h4 {
   overflow: hidden;
   font-size: 1em;
   /* example */
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 
   height: 4em;
   /* example */
@@ -223,17 +226,22 @@ h4 {
   line-height: 2em /* the same as height */
 ;
 }
-.main .file_upload > button {
+
+.main .file_upload.active {
+  height: 150px;
+  transition: .5s;
+}
+.main .file_uploa--button {
   float: right;
   width: 8em;
   /* example */
-
+  background-position: center;
+  background-size: cover;
   height: 100%;
 }
 .main .file_upload > div {
   padding-left: 1em;
   /* example */
-
 }
 .main .file_upload input[type=file] {
   position: absolute;
@@ -251,7 +259,7 @@ h4 {
   opacity: 0;
   cursor: pointer;
 }
-.main .file_upload > button {
+.main .file_upload--button {
   transition: background 0.2s;
   border-radius: 50px;
   overflow: hidden;
@@ -262,8 +270,12 @@ h4 {
   color: #c51abb;
   border: 2px solid #c51abb;
   padding: 1.5rem;
+  background-position: center;
+  background-size: cover;
+  height: 100%;
+  width: 8em;
 }
-.main .file_upload > button:before {
+.main .file_upload--button > span {
   content: '';
   background: url("../img/camera.svg") no-repeat center;
   width: 1.6rem;
@@ -274,6 +286,7 @@ h4 {
   right: 2px;
   background-size: 100%;
 }
+
 .main .logo {
   font-size: 2.5rem;
   font-family: 'Circe Extra Bold', sans-serif;
@@ -551,18 +564,27 @@ h4 {
   overflow: hidden;
   font-size: 1em;
   /* example */
-
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
   height: 4em;
   /* example */
 
   line-height: 2em /* the same as height */
 ;
 }
-.calc .file_upload > button {
+
+.calc .file_upload.active {
+  height: 150px;
+  transition: .5s;
+}
+
+.calc .file_upload--button {
   float: right;
   width: 8em;
   /* example */
-
+  background-position: center;
+  background-size: cover;
   height: 100%;
 }
 .calc .file_upload > div {
@@ -585,7 +607,7 @@ h4 {
   opacity: 0;
   cursor: pointer;
 }
-.calc .file_upload > button {
+.calc .file_upload--button {
   transition: background 0.2s;
   border-radius: 50px;
   overflow: hidden;
@@ -597,7 +619,7 @@ h4 {
   border: 2px dashed #c51abb;
   padding: 1.5rem;
 }
-.calc .file_upload > button:before {
+.calc .file_upload--button > span {
   content: '';
   background: url("../img/camera.svg") no-repeat center;
   width: 1.6rem;
@@ -1167,24 +1189,28 @@ h4 {
   overflow: hidden;
   font-size: 1em;
   /* example */
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 
   height: 4em;
   /* example */
 
-  line-height: 2em /* the same as height */
-;
+  line-height: 2em;
+  /* the same as height */
 }
-.popup-design .file_upload > button {
+.popup-design .file_upload.active {
+  height: 150px;
+  transition: .5s;
+}
+.popup-design .file_upload--button {
   float: right;
   width: 8em;
   /* example */
 
   height: 100%;
-}
-.popup-design .file_upload > div {
-  padding-left: 1em;
-  /* example */
-
+  background-position: center;
+  background-size: cover;
 }
 .popup-design .file_upload input[type=file] {
   position: absolute;
@@ -1202,7 +1228,7 @@ h4 {
   opacity: 0;
   cursor: pointer;
 }
-.popup-design .file_upload > button {
+.popup-design .file_upload--button {
   transition: background 0.2s;
   border-radius: 50px;
   overflow: hidden;
@@ -1213,8 +1239,10 @@ h4 {
   color: #c51abb;
   border: 2px dashed #c51abb;
   padding: 1.5rem;
+  background-position: center;
+  background-size: cover;
 }
-.popup-design .file_upload > button:before {
+.popup-design .file_upload--button > span {
   content: '';
   background: url("../img/camera.svg") no-repeat center;
   width: 1.6rem;
@@ -1303,19 +1331,19 @@ h4 {
   .calc .file_upload > div {
     display: none;
   }
-  .calc .file_upload > button {
+  .calc .file_upload--button {
     width: 100%;
   }
   .popup-design .file_upload > div {
     display: none;
   }
-  .popup-design .file_upload > button {
+  .popup-design .file_upload--button {
     width: 100%;
   }
   .main .file_upload > div {
     display: none;
   }
-  .main .file_upload > button {
+  .main .file_upload--button {
     width: 100%;
   }
 }
