@@ -235,6 +235,8 @@ const burger = (menuSelector, burgerSelector) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _services_requests__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../services/requests */ "./src/js/services/requests.js");
+
 const calc = (sizeSelector, materialSelector, optionsSelector, promocodeSelector, resultSelector, state) => {
   const sizeBlock = document.querySelector(sizeSelector),
     materialBlock = document.querySelector(materialSelector),
@@ -242,27 +244,52 @@ const calc = (sizeSelector, materialSelector, optionsSelector, promocodeSelector
     promocodeBlock = document.querySelector(promocodeSelector),
     resultBlock = document.querySelector(resultSelector);
   const calcFunc = () => {
-    switch (true) {
-      case sizeBlock.options[sizeBlock.selectedIndex].text === 'Выберите размер картины' || materialBlock.options[materialBlock.selectedIndex].text === 'Выберите материал картины':
-        resultBlock.textContent = "Please, choose picture size and material";
-        break;
-      case promocodeBlock.value === 'IWANTPOPART':
-        state.size = sizeBlock.options[sizeBlock.selectedIndex].text;
-        state.material = materialBlock.options[materialBlock.selectedIndex].text;
-        state.options = optionsBlock.options[optionsBlock.selectedIndex].text;
-        state.withoutDiscount = '';
-        state.withDiscount = Math.round(+sizeBlock.value * +materialBlock.value + +optionsBlock.value) * 0.7;
-        resultBlock.textContent = state.withDiscount;
-        break;
-      default:
-        state.size = sizeBlock.options[sizeBlock.selectedIndex].text;
-        state.material = materialBlock.options[materialBlock.selectedIndex].text;
-        state.options = optionsBlock.options[optionsBlock.selectedIndex].text;
-        state.withoutDiscount = Math.round(+sizeBlock.value * +materialBlock.value + +optionsBlock.value);
-        state.withDiscount = '';
-        resultBlock.textContent = state.withoutDiscount;
-    }
-    console.log(state);
+    Object(_services_requests__WEBPACK_IMPORTED_MODULE_0__["getResource"])('http://localhost:3000/calc').then(data => {
+      switch (true) {
+        case sizes.options[sizeBlock.selectedIndex].text === 'Выберите размер картины' || materialBlock.options[materialBlock.selectedIndex].text === 'Выберите материал картины':
+          resultBlock.textContent = "Please, choose picture size and material";
+          break;
+        case promocodeBlock.value === 'IWANTPOPART':
+          state.size = sizeBlock.options[sizeBlock.selectedIndex].text;
+          state.material = materialBlock.options[materialBlock.selectedIndex].text;
+          state.options = optionsBlock.options[optionsBlock.selectedIndex].text;
+          state.withoutDiscount = '';
+          state.withDiscount = Math.round(+sizeBlock.value * +materialBlock.value + +optionsBlock.value) * 0.7;
+          resultBlock.textContent = state.withDiscount;
+          break;
+        default:
+          state.size = sizeBlock.options[sizeBlock.selectedIndex].text;
+          state.material = materialBlock.options[materialBlock.selectedIndex].text;
+          state.options = optionsBlock.options[optionsBlock.selectedIndex].text;
+          state.withoutDiscount = Math.round(+sizeBlock.value * +materialBlock.value + +optionsBlock.value);
+          state.withDiscount = '';
+          resultBlock.textContent = state.withoutDiscount;
+      }
+      console.log(state);
+    }).catch(error => {
+      console.error('Ошибка при получении данных:', error);
+      switch (true) {
+        case sizeBlock.options[sizeBlock.selectedIndex].text === 'Выберите размер картины' || materialBlock.options[materialBlock.selectedIndex].text === 'Выберите материал картины':
+          resultBlock.textContent = "Please, choose picture size and material";
+          break;
+        case promocodeBlock.value === 'IWANTPOPART':
+          state.size = sizeBlock.options[sizeBlock.selectedIndex].text;
+          state.material = materialBlock.options[materialBlock.selectedIndex].text;
+          state.options = optionsBlock.options[optionsBlock.selectedIndex].text;
+          state.withoutDiscount = '';
+          state.withDiscount = Math.round(+sizeBlock.value * +materialBlock.value + +optionsBlock.value) * 0.7;
+          resultBlock.textContent = state.withDiscount;
+          break;
+        default:
+          state.size = sizeBlock.options[sizeBlock.selectedIndex].text;
+          state.material = materialBlock.options[materialBlock.selectedIndex].text;
+          state.options = optionsBlock.options[optionsBlock.selectedIndex].text;
+          state.withoutDiscount = Math.round(+sizeBlock.value * +materialBlock.value + +optionsBlock.value);
+          state.withDiscount = '';
+          resultBlock.textContent = state.withoutDiscount;
+      }
+      console.log(state);
+    });
   };
   sizeBlock.addEventListener('change', calcFunc);
   materialBlock.addEventListener('change', calcFunc);

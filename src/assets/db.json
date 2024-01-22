@@ -21,7 +21,26 @@
             "link": "#sharj"
         }
     ],
-    "calc": [
-        
-    ]
+    "calc": {
+        "sizes": {
+            "selectCanvasSize": "'Выберите размер картины",
+            "size40x50": "1000",
+            "size50x70": "1500",
+            "size70x70": "2000",
+            "size70x100": "500"
+        },
+        "materials": {
+            "selectCanvasMaterial": "Выберите материал картины",
+            "fiberCanvas": "1",
+            "linenCanvas": "1.2",
+            "cottonCanvas": "1.5"
+        },
+        "options": {
+            "additionalServices": "0",
+            "artGelCoating": "1000",
+            "expressProduction": "2000",
+            "deliveryOfFinishedWorks": "500"
+        },
+        "discount": "0.7"
+    }
 }
