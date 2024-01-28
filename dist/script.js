@@ -245,87 +245,62 @@ const calc = (sizeSelector, materialSelector, optionsSelector, promocodeSelector
     resultBlock = document.querySelector(resultSelector);
   const calcFunc = () => {
     Object(_services_requests__WEBPACK_IMPORTED_MODULE_0__["getResource"])('http://localhost:3000/calc').then(data => {
-      data.forEach(data => {
-        switch (data) {
-          case "sizes":
-            for (const sizeKey in data.sizes) {
-              if (Object.hasOwnProperty.call(data.sizes, sizeKey)) {
-                const sizeValue = data.sizes[sizeKey];
-                const sizeAttribute = document.getElementById('size').getAttribute('attribute');
-                if (sizeAttribute === sizeKey) {
-                  console.log(`  ${sizeKey}: ${sizeValue}`);
-                }
-              }
+      const selectedSizeAttribute = sizeBlock.options[sizeBlock.selectedIndex].getAttribute('attribute'),
+        selectedMaterialAttribute = materialBlock.options[materialBlock.selectedIndex].getAttribute('attribute'),
+        selectedOptionsAttribute = optionsBlock.options[optionsBlock.selectedIndex].getAttribute('attribute');
+      let discount = 1;
+      data.forEach(category => {
+        for (const key in category) {
+          if (Object.hasOwnProperty.call(category, key)) {
+            const values = category[key];
+            if (key === "sizes") {
+              state.size = values[selectedSizeAttribute];
+            } else if (key === "materials") {
+              state.material = values[selectedMaterialAttribute];
+            } else if (key === "options") {
+              state.options = values[selectedOptionsAttribute];
+            } else if (key === "discount") {
+              discount = values;
+            } else {
+              console.log("We don't have chosen parameters.");
             }
-            break;
-          case "materials":
-            for (const materialKey in data.materials) {
-              if (Object.hasOwnProperty.call(data.materials, materialKey)) {
-                const materialValue = data.materials[materialKey];
-                const materialAttribute = document.getElementById('material').getAttribute('attribute');
-                if (materialAttribute === materialKey) {
-                  console.log(`  ${materialKey}: ${materialValue}`);
-                }
-              }
-            }
-            break;
-          case "options":
-            for (const optionKey in data.options) {
-              if (Object.hasOwnProperty.call(data.options, optionKey)) {
-                const optionValue = data.options[optionKey];
-                const optionAttribute = document.getElementById('options').getAttribute('attribute');
-                if (optionAttribute === optionKey) {
-                  console.log(`  ${optionKey}: ${optionValue}`);
-                }
-              }
-            }
-            break;
-          case "discount":
-            // Обработка поля discount, если нужно
-            break;
-          default:
-          // Обработка других случаев, если нужно
+          }
         }
       });
-      // switch (true) {
-      //     case sizes.options[sizeBlock.selectedIndex].text === 'Выберите размер картины' || materialBlock.options[materialBlock.selectedIndex].text === 'Выберите материал картины':
-      //         resultBlock.textContent = "Please, choose picture size and material";
-      //         break;
-      //     case promocodeBlock.value === 'IWANTPOPART':
-      //         state.size = sizeBlock.options[sizeBlock.selectedIndex].text;
-      //         state.material = materialBlock.options[materialBlock.selectedIndex].text;
-      //         state.options = optionsBlock.options[optionsBlock.selectedIndex].text;
-      //         state.withoutDiscount = '';
-      //         state.withDiscount = Math.round((+sizeBlock.value) * (+materialBlock.value) + (+optionsBlock.value)) * 0.7;
-      //         resultBlock.textContent = state.withDiscount;
-      //         break;
-      //     default:
-      //         state.size = sizeBlock.options[sizeBlock.selectedIndex].text;
-      //         state.material = materialBlock.options[materialBlock.selectedIndex].text;
-      //         state.options = optionsBlock.options[optionsBlock.selectedIndex].text;
-      //         state.withoutDiscount = Math.round((+sizeBlock.value) * (+materialBlock.value) + (+optionsBlock.value));
-      //         state.withDiscount = '';
-      //         resultBlock.textContent = state.withoutDiscount;
-      // }
-      // console.log(state);
-    }).catch(error => {
-      console.error('Ошибка при получении данных:', error);
       switch (true) {
-        case sizeBlock.options[sizeBlock.selectedIndex].text === 'Выберите размер картины' || materialBlock.options[materialBlock.selectedIndex].text === 'Выберите материал картины':
+        case state.size === 'Выберите размер картины' || state.material === 'Выберите материал картины':
           resultBlock.textContent = "Please, choose picture size and material";
+          state.withoutDiscount = '';
+          state.withDiscount = '';
           break;
         case promocodeBlock.value === 'IWANTPOPART':
-          state.size = sizeBlock.options[sizeBlock.selectedIndex].text;
-          state.material = materialBlock.options[materialBlock.selectedIndex].text;
-          state.options = optionsBlock.options[optionsBlock.selectedIndex].text;
+          state.withoutDiscount = '';
+          state.withDiscount = Math.round(+state.size * +state.material + +state.options) * discount;
+          resultBlock.textContent = state.withDiscount;
+          break;
+        default:
+          state.withoutDiscount = Math.round(+state.size * +state.material + +state.options);
+          state.withDiscount = '';
+          resultBlock.textContent = state.withoutDiscount;
+      }
+      console.log(state);
+    }).catch(error => {
+      console.error('Ошибка при получении данных:', error);
+      state.size = sizeBlock.options[sizeBlock.selectedIndex].value;
+      state.material = materialBlock.options[materialBlock.selectedIndex].value;
+      state.options = optionsBlock.options[optionsBlock.selectedIndex].value;
+      switch (true) {
+        case state.size === 'Выберите размер картины' || state.material === 'Выберите материал картины':
+          resultBlock.textContent = "Please, choose picture size and material";
+          state.withoutDiscount = '';
+          state.withDiscount = '';
+          break;
+        case promocodeBlock.value === 'IWANTPOPART':
           state.withoutDiscount = '';
           state.withDiscount = Math.round(+sizeBlock.value * +materialBlock.value + +optionsBlock.value) * 0.7;
           resultBlock.textContent = state.withDiscount;
           break;
         default:
-          state.size = sizeBlock.options[sizeBlock.selectedIndex].text;
-          state.material = materialBlock.options[materialBlock.selectedIndex].text;
-          state.options = optionsBlock.options[optionsBlock.selectedIndex].text;
           state.withoutDiscount = Math.round(+sizeBlock.value * +materialBlock.value + +optionsBlock.value);
           state.withDiscount = '';
           resultBlock.textContent = state.withoutDiscount;
